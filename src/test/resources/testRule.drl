@@ -1,0 +1,17 @@
+package net.eusashead.validation.rules;
+
+import net.eusashead.validation.validator.*;
+import net.eusashead.validation.model.*;
+import net.eusashead.validation.repository.*;
+import net.eusashead.validation.form.*;
+
+global ApplicantRepository applicantRepository
+ 
+rule "Check applicant age"
+    when
+        $a : ApplicationForm()
+        $errors : Errors() 
+        $applicant:Applicant( age < 18 ) from applicantRepository.findApplicant($a.getApplicantId())
+    then
+        $errors.addError( $a, "applicantId", "Applicant age < 18" );
+end
